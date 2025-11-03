@@ -121,12 +121,15 @@ tbl_skillpoints = {
     'Ars feline': True,
     'Encyclopedia': True,
     'Debugging': True,
+    'Serendipity': True
 }
 
 # Text is the text to be printed and skill is the associated skill, checking if it's active. If not, there's only a chance it will speak.
 # We return False here when nothing is said so that you don't have to enter through an empty line.
 def DoSkillCheck( text, skill ):
-    if tbl_skillpoints[ skill ]:
+    if skill not in tbl_skillpoints:
+        print( f"YOU MISSPELLED {skill}!!")
+    elif tbl_skillpoints[ skill ]:
         print( text )
         return True
     elif random.randint( 1, 2 ) == 1:
@@ -150,11 +153,19 @@ DSC_enunique = partial( DoSkillCheck,
     "Encyclopedia"
 )
 DSC_encamels = partial( DoSkillCheck, 
-    "[ENCYCLOPEDIA] Distinctly the yellow variant of Dune brand cigarettes. You can tell by the taste.", 
-    "Encyclopedia"
+    "[ELECTROCHEMISTRY] Distinctly the yellow variant of Dune brand cigarettes. You can tell by the taste.", 
+    "Electrochemistry"
 )
-DSC_meowmeow = partial( DoSkillCheck, 
+DSC_afmeowmeow = partial( DoSkillCheck, 
     "[ARS FELINE] The noises of your kin soothe your dry thoughts. A warm lap, somewhere safe.", 
+    "Ars feline"
+)
+DSC_sdcrescent = partial( DoSkillCheck, 
+    "[SERENDIPITY] Don't go back. Please. It's nice here.", 
+    "Serendipity"
+)
+DSC_afright = partial( DoSkillCheck, 
+    "[ARS FELINE] It's speaking the truth.", 
     "Ars feline"
 )
 
@@ -184,7 +195,7 @@ text3 = [ ['"Sure! I`ll try to make it simple."'],
 ]
 
 response4 = ['"How about that special dialogue?"', "meow"]
-text4 = [ ['"Right."'], ['"Meow meow meow!"'], ['"That`s it!"'], [DSC_meowmeow] ]
+text4 = [ ['"Right."'], ['"Meow meow meow!"'], ['"That`s it!"'], [DSC_afmeowmeow] ]
 
 response5 = '"Ask me a question."'
 text5 = [ ['"Sure."'], ['"Do you desire to be unique?"']]
@@ -195,13 +206,15 @@ text5b = [['"Oh."'], ['"How very interesting."'], ['"It`s not surprising. I`ve b
 response6 = "I'm really zoned out..."
 text6 = [['You are. Air drifts blankly out of your pink muzzle. Feels like a thicket of fog behind your eyes. '], 
          ["Clarity slowly clamping its jaws. If you let it, you won`t be able to go back."], 
-         ["Its sharp crescent iris is piercing, waiting. You can smell the foul breath of its pitch black maw."]
+         ["Its sharp crescent iris is piercing, waiting. You can smell the foul breath of its pitch black maw."],
+         [DSC_sdcrescent]
 ]
 text6unique = "Waiting for its unique little creature."
 
 text6options1 = [ 'Breathe in.', 'Hold your breath for a second longer.' ]
 text6exiting = [ ['"Oh, leaving already?"'], 
-    ['"That`s okay. Don`t worry - remember we`re always watching."'], 
+    ['"That`s okay. Don`t worry - remember we`re always watching."'],
+    [ DSC_afright ], 
     ["Debug lights its cigarette on its fur. It crackles briefly, and its fur seems even darker in the orange flicker."], 
     ["The smoke feels thick in your lungs. It smells like solace in comfort."],
     [DSC_encamels],
