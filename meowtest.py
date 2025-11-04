@@ -85,10 +85,17 @@ def doinput( text, table ):
     return response
 
 # Prints multiple dialogue or a single one.
-def PrintNested( text ):
+# Use the second argument to specify what range of the table should be accessed, for versatility
+def PrintNested( text, range=[-1, -1] ):
+    start = range[0]
+    end = range[1]
+
     skipfast()
     if isinstance(text, list):
-        for row in text:
+        if start == -1:
+            start = 0
+            end = len(text)
+        for row in text[start:end]:
             # temp makes sure you don't have to enter through an empty line when the skill check fails.
             # It's returned by DoSkillCheck(). temp is False when it should skip automatically
             temp = True
@@ -137,6 +144,13 @@ def DoSkillCheck( text, skill ):
         return True
     else:
         return False
+    
+# Displays a supposed choice input such as:
+# 1. What?
+# Just for immersion though. It doesn't matter what you press, you advance anyway.
+def FakeInput( text ):
+    print("\n")
+    print( text )
 
 
 # Skill check dialogue list
@@ -261,7 +275,7 @@ def gotoDebugIntro():
     intro = True
     while intro:
         treeinput = doinput(texthub, inp_testhub)
-        #print("\n")
+
         match treeinput:
             case 1: PrintNested(text1)
             case 2: PrintNested(text2)
@@ -285,9 +299,104 @@ gotoDebugIntro()
 # You bring it back and you talk
 # You can also watch the skyline a few times to unlock a locked dialogue option
 
-livingroomhub = "The living room feels like an epicentre of conciousness, white popcorn walls and a " \
-"yellow ceiling light protecting you from the crushing unknown of the dark, distant city streets. Even the window curtains are squinting, scared of the horizon, only letting" \
-"a few black stripes through. At least the various tables feel cozy under their blankets of empty packagings and random items."
+# living room text hub goes here
+
+# Living room skill dialogue
+DSC_sdangry = partial( DoSkillCheck, 
+    "[SERENDIPITY] Somewhere, a few metres above your horns, someone sips a sweet, lukewarm tea in the kitchen, unable to sleep. Squinting, they are planning out the words of reprimand.", 
+    "Serendipity"
+)
+DSC_sdshots = partial( DoSkillCheck, 
+    "[SERENDIPITY] A couple are still full. Someone filled them, convinced their body could stomach another shot. That time never came.",
+    "Serendipity"
+)
+DSC_ecdump = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] This is the natural environment of the afterparty. I can't blame anyone - teeth-clenching peaks of euphoria aren't a time to be neat and tidy. You know that. The sight is homely to you.",
+    "Electrochemistry"
+)
+DSC_ectemp = partial( DoSkillCheck, 
+    "[] ",
+    ""
+)
+DSC_ecbowl = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Everyone knows the morning cigarette is the most important meal of the day.",
+    "Electrochemistry"
+)
+
+lr_seqceiling = "Gaze at the ceiling."
+lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your furtive, soft gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
+    ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
+    [DSC_sdangry]]
+
+lr_seqtrash = "Try to concern yourself with the trash around the room."
+lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chips."],
+    ["The table cloth is begging for a distant laundry day. Prominent stains of various alcohol drinks paint lakes and oceans, like on a geographical map."],
+    ["There's a red cereal bowl filled with ash and stubs, surrounded by its many shot glass children."],
+    [DSC_sdshots],
+    ["A bustling metropolis of glassy vodka skyscrapers is situated near the sofa, shaping and curving the lights of the room into a quiet night life."],
+    ["Overall, it looks like shit."],
+    [DSC_ecdump],
+    ["It'll take a while to make neat again, even for a sober person, and neither you or Mefedron will be sober for a good while. She can use the help nonetheless."]
+    ]
+
+# Inputs for looking at the clutter
+# Bowl
+# Look under the table
+# Go back
+
+lr_seqtrash_bowl = "Curiously peep into the cereal bowl."
+lr_seqtrash_bowl_r = [["An inconspicuous bowl."], 
+    ["Okay, no, it looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
+    [DSC_ecbowl],
+    ["A nasty little image of filling the bowl with milk intrudes on your mind and it makes you shiver."],]
+
+# Here you have to check if you have seen the joint and whether you have taken it
+
+lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."], 
+    ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned."], 
+    ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt."], 
+    ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy."], 
+    ["[ELECTROCHEMISTRY] Well, you going for it?"], 
+    ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter."], 
+    ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], 
+    ["[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago."], 
+    ["[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold."], ]
+
+def lr_eventjoint():
+    # If seeing it for the first time
+    if not ReturnFlag( "lr_sawjoint" ):
+        # [ELECTROCHEMISTRY] Wait. Wait, look.
+            # What?
+        # [ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.
+            # Oh, it's a joint.
+        # [ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
+        # [ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
+        # [ELECTROCHEMISTRY] Well, you going for it?
+            # I don't see a lighter anywhere...
+        # [ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
+        # [ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
+        # [DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
+        # [SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.
+
+        print("")
+    # If you have seen it already and it's still there
+    elif not ReturnFlag( "lr_tookjoint"):
+        # The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.
+        # [ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.
+        # [ELECTROCHEMISTRY] No, no, kittens. WE would really like to smoke, too.
+        # ACT: Smoke the join right here and now
+        #
+        # ACT: Take the joint without smoking it (you won't be able to smoke it later)
+        # Despite the noisy cravings in your mind, you neatly pocket the joint so as not to spill it.
+        # ACT: Focus on something else.
+        print("")
+    # If it's gone
+    else:
+        PrintNested( "A cigarette tarantula lies buried in the ash, its legs sticking out in a silent prowl." )
+
+lr_seqtrash_undertable = "Check the destruction under the table."
+
+lr_seqtrash_goback = "Focus on something else than trash, finally."
 
 
 
