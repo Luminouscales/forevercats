@@ -1,0 +1,9 @@
+[ ["[ELECTROCHEMISTRY] Wait. Wait, look.
+"], ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.
+"], ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
+"], ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
+"], ["[ELECTROCHEMISTRY] Well, you going for it?
+"], ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
+"], ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
+"], ["[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
+"], ["[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold."], ]
