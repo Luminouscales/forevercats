@@ -220,6 +220,9 @@ text6exiting = [ ['"Oh, leaving already?"'],
     [DSC_encamels],
     ['"Go now. I`m waiting for you."']
 ]
+text6exiting2 = [["Brown and yellow splotches of fog coalesce back into concepts and figures."], 
+    ["The cat is gone, the cupboard that was its pedestal again inhabitated by stray bottles of beer and unassorted plastic litter."],
+    ["Existence feels heavy on your drifting wings and serpent tail. Go move around. Let the ennui chew on something else than your scales."]]
 
 inp_testhub = [ response1, response2, response3, response4, response5, response6 ]
 
@@ -249,7 +252,7 @@ def seq_cat_leave():
             PrintNested( text6exiting )
             skip()
             PrintNested( "..........." )
-            PrintNested( "Brown and yellow splotches" )
+            PrintNested( text6exiting2 )
         case 2:
             PrintNested("Slowly drifting down. The cat is watching you. It feels like a smirk.")
 
@@ -281,6 +284,11 @@ gotoDebugIntro()
 # She's smoking and she's coming down from stimulants. Her lighter just broke so you decide to go fetch it from the kitchen
 # You bring it back and you talk
 # You can also watch the skyline a few times to unlock a locked dialogue option
+
+livingroomhub = "The living room feels like an epicentre of conciousness, white popcorn walls and a " \
+"yellow ceiling light protecting you from the crushing unknown of the dark, distant city streets. Even the window curtains are squinting, scared of the horizon, only letting" \
+"a few black stripes through. At least the various tables feel cozy under their blankets of empty packagings and random items."
+
 
 
 def gotoLivingRoom():
