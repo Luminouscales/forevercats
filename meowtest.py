@@ -8,7 +8,8 @@ debug = True # Shows background stuff like flag changes and locked dialogue flag
 # All flags, globally.
 tbl_flags = {
     'meow': False, # Flag test. Meow meow meow!
-    'unique': False # Told Debug you want to be unique
+    'unique': False, # Told Debug you want to be unique
+    'lr_sawjoint': False, # Lynx has seen the joint in the bowl already
 }
 
 # Skillpoints
@@ -86,7 +87,7 @@ def doinput( text, table ):
 
 # Prints multiple dialogue or a single one.
 # Use the second argument to specify what range of the table should be accessed, for versatility
-def PrintNested( text, range=[-1, -1] ):
+def PrintNested( text, range=[-1, -1], fake=None ):
     start = range[0]
     end = range[1]
 
@@ -104,14 +105,22 @@ def PrintNested( text, range=[-1, -1] ):
                 temp = row[0]()
             else:
                 print( row[0] )
+                if fake is not None:
+                    print("\n1. " + fake)
+                    input("\n")
                 
             # If it's the last line then don't do the ... because it's redundant
             if text.index(row) + 1 != len(text) and temp:
                 skip()
-        skip()
+        if fake is None:
+            skip()
     else:
         print( text )
-        skip()
+        if fake is not None:
+            print("\n1. " + fake)
+            input("\n")
+        else:
+            skip()
 
 # Short way to check if dialogue should run depending on flag
 def DoConditional( text, flag ):
@@ -149,8 +158,8 @@ def DoSkillCheck( text, skill ):
 # 1. What?
 # Just for immersion though. It doesn't matter what you press, you advance anyway.
 def FakeInput( text ):
-    print("\n")
-    print( text )
+    print( "1. " + text )
+    skip()
 
 
 # Skill check dialogue list
@@ -267,6 +276,7 @@ def seq_cat_leave():
             skip()
             PrintNested( "..........." )
             PrintNested( text6exiting2 )
+            gotoLivingRoom()
         case 2:
             PrintNested("Slowly drifting down. The cat is watching you. It feels like a smirk.")
 
@@ -286,9 +296,6 @@ def gotoDebugIntro():
             case 5: seq_cat_unique()
             case 6: seq_cat_leave()
             case _: skip()
-
-gotoDebugIntro()
-
 
 # LIVING ROOM
 
@@ -322,6 +329,14 @@ DSC_ecbowl = partial( DoSkillCheck,
     "[ELECTROCHEMISTRY] Everyone knows the morning cigarette is the most important meal of the day.",
     "Electrochemistry"
 )
+DSC_dblighterloc = partial( DoSkillCheck, 
+    "[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.",
+    "Debugging"
+)
+DSC_sdmefwantweed = partial( DoSkillCheck, 
+    "[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.",
+    "Serendipity"
+)
 
 lr_seqceiling = "Gaze at the ceiling."
 lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your furtive, soft gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
@@ -346,7 +361,7 @@ lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chi
 
 lr_seqtrash_bowl = "Curiously peep into the cereal bowl."
 lr_seqtrash_bowl_r = [["An inconspicuous bowl."], 
-    ["Okay, no, it looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
+    ["Okay, no. It looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
     [DSC_ecbowl],
     ["A nasty little image of filling the bowl with milk intrudes on your mind and it makes you shiver."],]
 
@@ -363,22 +378,26 @@ lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."],
     ["[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold."], ]
 
 def lr_eventjoint():
+    PrintNested( lr_seqtrash_bowl_r )
     # If seeing it for the first time
     if not ReturnFlag( "lr_sawjoint" ):
-        # [ELECTROCHEMISTRY] Wait. Wait, look.
-            # What?
-        # [ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.
-            # Oh, it's a joint.
+        PrintNested("[ELECTROCHEMISTRY] Wait. Wait, look.", fake="What?")
+        PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.")
+        #FakeInput("Oh, it's a joint.")
+        PrintNested( lr_eventjoint_first, [2, 4])
         # [ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
         # [ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
         # [ELECTROCHEMISTRY] Well, you going for it?
-            # I don't see a lighter anywhere...
+        # FLAG CHECK IF YOU HAVE LIGHTER. IF YOU DO YOU CAN SMOKE HERE FIX
+        FakeInput("I don't see a lighter anywhere...")
+        PrintNested( lr_eventjoint_first, [5, 6])
+        DSC_dblighterloc()
+        DSC_sdmefwantweed
         # [ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
         # [ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
         # [DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
         # [SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.
 
-        print("")
     # If you have seen it already and it's still there
     elif not ReturnFlag( "lr_tookjoint"):
         # The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.
@@ -398,15 +417,32 @@ lr_seqtrash_undertable = "Check the destruction under the table."
 
 lr_seqtrash_goback = "Focus on something else than trash, finally."
 
+lr_inputs = [lr_seqceiling, lr_seqtrash ]
 
+lr_trash_inputs = [lr_seqtrash_bowl, lr_seqtrash_undertable, lr_seqtrash_goback ]
 
 def gotoLivingRoom():
     hub_livingroom = True
+    texthub = "text goes here"
     while hub_livingroom:
-        treeinput = doinput()
+        treeinput = doinput( texthub, lr_inputs )
+        match treeinput:
+            case 1: PrintNested( lr_seqceiling_r )
+            case 2: 
+                PrintNested( lr_seqtrash_r )
+                gotoLivingRoom_trash()
+
+
         # PrintNested( "Man I'm tired" )
 
-
+def gotoLivingRoom_trash():
+    hub_livingroom_trash = True
+    texthub = "text goes here"
+    while hub_livingroom_trash:
+        treeinput = doinput( texthub, lr_trash_inputs )
+        match treeinput:
+            case 1: # Ashtray bowl
+                lr_eventjoint()
 
 
 # Electrochemistry # 
@@ -419,3 +455,7 @@ def gotoLivingRoom():
 # One way to get to that street is by meeting [Blank], working on their car. You can talk to them by having Electrochem recognise the bumper sticker, or Debugging remembering what the issue might be.
 # "Shine pulled you out on an especially bright day to watch her replace the battery in her car."
 # If not that, then after walking around the city you can just bring up that he's been at this for a while.
+
+# START
+#gotoDebugIntro()
+gotoLivingRoom()
