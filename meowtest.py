@@ -110,7 +110,7 @@ def PrintNested( text, range=[-1, -1], fake=None ):
                     input("\n")
                 
             # If it's the last line then don't do the ... because it's redundant
-            if text.index(row) + 1 != len(text) and temp:
+            if text.index(row) + 1 != end and temp:
                 skip()
         if fake is None:
             skip()
@@ -382,12 +382,9 @@ def lr_eventjoint():
     # If seeing it for the first time
     if not ReturnFlag( "lr_sawjoint" ):
         PrintNested("[ELECTROCHEMISTRY] Wait. Wait, look.", fake="What?")
-        PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.")
+        PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.", fake="Oh, it's a joint.")
         #FakeInput("Oh, it's a joint.")
         PrintNested( lr_eventjoint_first, [2, 4])
-        # [ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
-        # [ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
-        # [ELECTROCHEMISTRY] Well, you going for it?
         # FLAG CHECK IF YOU HAVE LIGHTER. IF YOU DO YOU CAN SMOKE HERE FIX
         FakeInput("I don't see a lighter anywhere...")
         PrintNested( lr_eventjoint_first, [5, 6])
@@ -431,9 +428,6 @@ def gotoLivingRoom():
             case 2: 
                 PrintNested( lr_seqtrash_r )
                 gotoLivingRoom_trash()
-
-
-        # PrintNested( "Man I'm tired" )
 
 def gotoLivingRoom_trash():
     hub_livingroom_trash = True

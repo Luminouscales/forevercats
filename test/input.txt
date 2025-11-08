@@ -1,9 +1,40 @@
-[ELECTROCHEMISTRY] Wait. Wait, look.
-[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.
-[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
-[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
-[ELECTROCHEMISTRY] Well, you going for it?
-[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
-[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
-[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
-[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.
+Reluctantly, you place your right claw on the table and bend down.
+Your back is sore, the pain strains your scales, pushing some air out of your lungs and making your wings squirm.
+[ENCYCLOPEDIA] I still advise you to stretch more often, and sleep longer. Soothes your body and mind. The psychedelics you take do not help at night.
+The lamp spills into a mellow shadow on the carpet. It's oddly peaceful here, clean too, the wooden roof protecting the floor from damage.
+[ELECTROCHEMISTRY] A familiar sight, right? You remember all the things you've done under a party table. Mostly blacking out. It really is cozy, the way a cave is cozy for a wet animal.
+Nothing to see here, besides an empty baggie of the small variety. The carpet will be bothersome to vacuum, though.
+[ELECTROCHEMISTRY] Hey, now. How do you know it's really empty? Don't throw around baseless facts. It's dark down here, go check!
+	# ...why would I do that?
+	# [ELECTROCHEMISTRY] Come on now. Your heart is running a little faster at the very thought. Your body's talking to you.
+	# [DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.
+	# Examine the baggie.
+		# You get on your knees to slither further into the darkness. With one stretch of your thin arm the plastic rustles promisingly in your pink claw.
+		# It's...
+		# [ELECTROCHEMISTRY] ...not empty. There's still some left. When do I ever let you down?
+			# Often.
+			[ELECTROCHEMISTRY] Shut up.
+		# [ENCYCLOPEDIA] When 'eyeballing' it, it appears to be around 200 miligrams of the unidentified powder.
+		# Get to snorting the thing already!
+		# Snort only a little bit.
+		# Examine the powder more closely.
+			# It's stereotypically white, and ground into fineness, forming tiny clumps, like snow on three branches.
+		 	# Your pink muzzle tells you it has a powerful smell, though you can't quite put your finger on it.
+			# [DEBUGGING] Don't stimulants usually smell? I think they do.
+			# [ENCYCLOPEDIA] It is common knowledge that it is extremely unreliable to discern a substance by its appearance. Also known is that you should not ingest unknown substances.
+			# [ELECTROCHEMISTRY] Are you talking to Encyclopedia? Don't. Nerds don't know fun.
+		# Actually, let's keep it for later.
+			# [ELECTROCHEMISTRY] Really? You seem to be feeling veeery strongly about the powder inside. Who knows what it could be? How it could make you feel...
+			# Discard the thought.
+			# No, seriously. I'm putting it down.
+				# It's almost like you can feel the powder burning in your nostrils, the yellow straw in your claw...
+				# The tiny rush in your heart growing into a flame, warming up every little nerve ending as it spreads through your body...
+				# Past your flat, rhythmic chest, the air warm and pleasing in your lungs, like a fireplace in winter...
+				# Caressing your cheek, licking a sharp smile out of the frozen ennui on your face...
+				# Finally hitting your brain like an orgasm, drowning all your thoughts in a woozy, giddy haze...
+				# [DEBUGGING] The night is late. You won't feel anything besides letting the comedown come back. Think of the hangover tomorrow morning.
+				# Snort the whole thing already.
+
+	# Leave the baggie where it is.
+		# [ELECTROCHEMISTRY] Whatever, sure. It'll be stuck in your head now. Good luck falling asleep later.
+			[DEBUGGING] Good work. This feeling will pass. It's better in the long run.
