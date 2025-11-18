@@ -434,9 +434,6 @@ def gotoLivingRoom():
                 PrintNested( lr_seqtrash_r )
                 gotoLivingRoom_trash()
 
-
-        # PrintNested( "Man I'm tired" )
-
 def gotoLivingRoom_trash():
     hub_livingroom_trash = True
     texthub = "text goes here"
