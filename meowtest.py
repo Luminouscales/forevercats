@@ -10,6 +10,9 @@ tbl_flags = {
     'meow': False, # Flag test. Meow meow meow!
     'unique': False, # Told Debug you want to be unique
     'lr_sawjoint': False, # Lynx has seen the joint in the bowl already
+    'lr_tookjoint': False, # Lynx has taken the joint
+    'lr_smokedjoint': False, # Lynx has smoked the joint
+    'lr_havelighter': False, # Grabbed the lighter from the kitchen
 }
 
 # Skillpoints
@@ -337,6 +340,10 @@ DSC_sdmefwantweed = partial( DoSkillCheck,
     "[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.",
     "Serendipity"
 )
+DSC_afmefwantweed2 = partial( DoSkillCheck, 
+    "[ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.",
+    "Ars feline"
+)
 
 lr_seqceiling = "Gaze at the ceiling."
 lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your furtive, soft gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
@@ -365,50 +372,59 @@ lr_seqtrash_bowl_r = [["An inconspicuous bowl."],
     [DSC_ecbowl],
     ["A nasty little image of filling the bowl with milk intrudes on your mind and it makes you shiver."],]
 
-# Here you have to check if you have seen the joint and whether you have taken it
-
 lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."], 
     ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned."], 
     ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt."], 
     ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy."], 
     ["[ELECTROCHEMISTRY] Well, you going for it?"], 
     ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter."], 
-    ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], 
-    ["[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago."], 
-    ["[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold."], ]
+    ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], ]
 
 def lr_eventjoint():
+
+
     PrintNested( lr_seqtrash_bowl_r )
     # If seeing it for the first time
     if not ReturnFlag( "lr_sawjoint" ):
         PrintNested("[ELECTROCHEMISTRY] Wait. Wait, look.", fake="What?")
         PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.", fake="Oh, it's a joint.")
-        #FakeInput("Oh, it's a joint.")
         PrintNested( lr_eventjoint_first, [2, 4])
         # FLAG CHECK IF YOU HAVE LIGHTER. IF YOU DO YOU CAN SMOKE HERE FIX
-        FakeInput("I don't see a lighter anywhere...")
-        PrintNested( lr_eventjoint_first, [5, 6])
-        DSC_dblighterloc()
-        DSC_sdmefwantweed
-        # [ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
-        # [ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
-        # [DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
-        # [SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.
+        if not ReturnFlag( "lr_havelighter" ):
+            FakeInput("I don't see a lighter anywhere...")
+            PrintNested( lr_eventjoint_first, [5, 6])
+            DSC_dblighterloc()
+            skip()
+            DSC_sdmefwantweed()
+            skip()
+        else:
+            smoketable = [ ['Smoke the joint right here and now'],
+            ["Take the joint without smoking it (you won't be able to smoke it later!)"],
+            ["Focus on something else"]
+            ]
+            choice = True
+            while choice:
+                treeinput = doinput( None, smoketable )
+                match treeinput:
+                    case 1:
+                        
+            print("")
 
     # If you have seen it already and it's still there
     elif not ReturnFlag( "lr_tookjoint"):
-        # The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.
-        # [ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.
+        PrintNested("The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.")
+        DSC_afmefwantweed2()
+        if not ReturnFlag( "lr_havelighter" ):
+            PrintNested( "Still nothing to smoke it with, though." )
         # [ELECTROCHEMISTRY] No, no, kittens. WE would really like to smoke, too.
-        # ACT: Smoke the join right here and now
-        #
+        # ACT: Smoke the joint right here and now
         # ACT: Take the joint without smoking it (you won't be able to smoke it later)
         # Despite the noisy cravings in your mind, you neatly pocket the joint so as not to spill it.
         # ACT: Focus on something else.
         print("")
     # If it's gone
     else:
-        PrintNested( "A cigarette tarantula lies buried in the ash, its legs sticking out in a silent prowl." )
+        PrintNested( "A cigarette tarantula lies buried in the ash, its leg butts sticking out in a silent prowl." )
 
 lr_seqtrash_undertable = "Check the destruction under the table."
 
