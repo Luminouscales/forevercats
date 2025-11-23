@@ -6,8 +6,8 @@ The lamp spills into a mellow shadow on the carpet. It's oddly peaceful here, cl
 Nothing to see here, besides an empty baggie of the small variety. The carpet will be bothersome to vacuum, though.
 [ELECTROCHEMISTRY] Hey, now. How do you know it's really empty? Don't throw around baseless facts. It's dark down here, go check!
 	# ...why would I do that?
-	# [ELECTROCHEMISTRY] Come on now. Your heart is running a little faster at the very thought. Your body's talking to you.
-	# [DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.
+		# [ELECTROCHEMISTRY] Come on now. Your heart is running a little faster at the very thought. Your body's talking to you.
+		# [DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.
 	# Examine the baggie.
 		# You get on your knees to slither further into the darkness. With one stretch of your thin arm the plastic rustles promisingly in your pink claw.
 		# It's...

@@ -360,7 +360,7 @@ DSC_weedsleep = partial( DoSkillCheck,
 
 
 lr_seqceiling = "Gaze at the ceiling."
-lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your furtive, soft gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
+lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
     ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
     [DSC_sdangry]]
 
@@ -374,6 +374,8 @@ lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chi
     [DSC_ecdump],
     ["It'll take a while to make neat again, even for a sober person, and neither you or Mefedron will be sober for a good while. She can use the help nonetheless."]
     ]
+
+lr_seqhallway = "Leave the living room."
 
 # Inputs for looking at the clutter
 # Bowl
@@ -470,11 +472,16 @@ def lr_eventjoint():
         else:
             PrintNested( "A cigarette tarantula lies buried in the ash, its leg butts sticking out in a silent prowl." )
 
+# Trash - Under table - Baggie
+
+# def lr_seqtrash_undertable_seq():
+    
+
 lr_seqtrash_undertable = "Check the destruction under the table."
 
 lr_seqtrash_goback = "Focus on something else than trash, finally."
 
-lr_inputs = [lr_seqceiling, lr_seqtrash ]
+lr_inputs = [lr_seqceiling, lr_seqtrash, lr_seqhallway ]
 
 lr_trash_inputs = [lr_seqtrash_bowl, lr_seqtrash_undertable, lr_seqtrash_goback ]
 
@@ -488,6 +495,8 @@ def gotoLivingRoom():
             case 2: 
                 PrintNested( lr_seqtrash_r )
                 gotoLivingRoom_trash()
+            case 3:
+                gotoHallway()
 
 def gotoLivingRoom_trash():
     hub_livingroom_trash = True
@@ -497,7 +506,21 @@ def gotoLivingRoom_trash():
         match treeinput:
             case 1: # Ashtray bowl
                 lr_eventjoint()
+            case 2: # Under table (the toby fox game)
+                PrintNested( "A calm bytecat is sleeping here." )
+            case 3:
+                hub_livingroom_trash = False
 
+
+# HALLWAY
+def gotoHallway():
+    hub_hallway = True
+    texthub = "The corridor pierces through her apartment like a tight vein, cold tiles connecting the kitchen and Mef's room with the light dimly spilling from the living room."
+    # Kitchen
+    # Mef's room
+    # Living room
+    while hub_hallway:
+        treeinput = 
 
 # Electrochemistry # 
 
