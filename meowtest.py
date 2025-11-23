@@ -12,7 +12,7 @@ tbl_flags = {
     'lr_sawjoint': False, # Lynx has seen the joint in the bowl already
     'lr_tookjoint': False, # Lynx has taken the joint
     'lr_smokedjoint': False, # Lynx has smoked the joint
-    'lr_havelighter': False, # Grabbed the lighter from the kitchen
+    'lr_havelighter': True, # Grabbed the lighter from the kitchen
 }
 
 # Skillpoints
@@ -344,6 +344,20 @@ DSC_afmefwantweed2 = partial( DoSkillCheck,
     "[ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.",
     "Ars feline"
 )
+DSC_embers = partial( DoSkillCheck, 
+    "[SERENDIPITY] You used to be joined like this with the love of the world, sharing embers with distant lips, warm in the streetlights of the night. Now, so far away, alone, even the stars are locked in the white brick ceiling.", 
+    "Serendipity"
+    )
+DSC_stand = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Plenty more back home. This joint was just a one night stand.",
+    "Electrochemistry"
+)
+DSC_weedsleep = partial( DoSkillCheck, 
+    "[DEBUGGING] It'll be easier for you to fall asleep now.",
+    "Debugging"
+)
+
+
 
 lr_seqceiling = "Gaze at the ceiling."
 lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your furtive, soft gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
@@ -380,16 +394,55 @@ lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."],
     ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter."], 
     ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], ]
 
+lr_eventjoint_smoke_text = [ ["Carefully you reach inside and hoist the joint in between two talons, tapping the ash off lightly. "], 
+ ["It's barely touched, despite that its creator clearly put some love into it."], 
+ ["The ground up weed sits snugly inside the carefully rolled paper. The filter has an almost mathematical zigzag to it, fitting perfectly inside."], 
+ ["You swiftly light its charred end, and pull. The air flow is magnificent, smoke hitting your throat with little effort."], 
+ ["It tastes as wonderful as every time, holding your lungs tight in a jagged, burning embrace."], 
+ ["Your chest flattens in rest and the smoke wistfully relents to the yellow of the room."], 
+ ["..."], 
+ [DSC_embers],
+ ["After an idle moment you drop the empty joint back in the bowl as fizzy softness stretches in your head."], 
+ ["Numb pleasure coiling through your scales, dragging you down like a sleepy lover to bed."], 
+ ["It yawns on the comedown, and for a moment its purring is louder than the ennui. Just for a moment."], 
+ ["Then the thoughts return, but now you're a little high at least, for a moment."],
+ [DSC_stand],  
+ [DSC_weedsleep], 
+ ["[SERENDIPITY] Feels like there's something out there, thoughts wandering the streetlights. Maybe go and see."], ]
+
+def lr_eventjoint_smoke():
+    PrintNested(lr_eventjoint_smoke_text)
+    SetFlag( "lr_smokedjoint", True )
+
+def lr_eventjoint_consider():
+    DSC_sdmefwantweed()
+    smoketable = [ "Smoke the joint right here and now",
+    "Take the joint without smoking it (you won't be able to smoke it later!)",
+    "Focus on something else"
+    ]
+    choice = True
+    while choice:
+        treeinput = doinput( None, smoketable )
+        match treeinput:
+            case 1: 
+                lr_eventjoint_smoke(),
+                choice = False
+            case 2: 
+                SetFlag( "lr_tookjoint", True )
+                PrintNested("Despite the noisy cravings in your mind, you neatly pocket the joint so as not to spill it."),
+                choice = False
+            case 3: 
+                PrintNested("Reluctant to betray its beauty so, you keep a shard of the joint in your memory."),
+                choice = False
+
 def lr_eventjoint():
-
-
     PrintNested( lr_seqtrash_bowl_r )
     # If seeing it for the first time
     if not ReturnFlag( "lr_sawjoint" ):
+        SetFlag( "lr_sawjoint", True )
         PrintNested("[ELECTROCHEMISTRY] Wait. Wait, look.", fake="What?")
         PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.", fake="Oh, it's a joint.")
         PrintNested( lr_eventjoint_first, [2, 4])
-        # FLAG CHECK IF YOU HAVE LIGHTER. IF YOU DO YOU CAN SMOKE HERE FIX
         if not ReturnFlag( "lr_havelighter" ):
             FakeInput("I don't see a lighter anywhere...")
             PrintNested( lr_eventjoint_first, [5, 6])
@@ -398,33 +451,24 @@ def lr_eventjoint():
             DSC_sdmefwantweed()
             skip()
         else:
-            smoketable = [ ['Smoke the joint right here and now'],
-            ["Take the joint without smoking it (you won't be able to smoke it later!)"],
-            ["Focus on something else"]
-            ]
-            choice = True
-            while choice:
-                treeinput = doinput( None, smoketable )
-                match treeinput:
-                    case 1:
-                        
-            print("")
+            lr_eventjoint_consider()
 
     # If you have seen it already and it's still there
-    elif not ReturnFlag( "lr_tookjoint"):
+    elif not ReturnFlag( "lr_tookjoint") and not ReturnFlag("lr_smokedjoint"):
         PrintNested("The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.")
-        DSC_afmefwantweed2()
         if not ReturnFlag( "lr_havelighter" ):
-            PrintNested( "Still nothing to smoke it with, though." )
+            PrintNested( "[ELECTROCHEMISTRY] Still nothing to smoke it with, though." )
         # [ELECTROCHEMISTRY] No, no, kittens. WE would really like to smoke, too.
-        # ACT: Smoke the joint right here and now
-        # ACT: Take the joint without smoking it (you won't be able to smoke it later)
-        # Despite the noisy cravings in your mind, you neatly pocket the joint so as not to spill it.
-        # ACT: Focus on something else.
-        print("")
+        else:
+            DSC_afmefwantweed2()
+            skip()
+            lr_eventjoint_consider()
     # If it's gone
     else:
-        PrintNested( "A cigarette tarantula lies buried in the ash, its leg butts sticking out in a silent prowl." )
+        if ReturnFlag("lr_smokedjoint"):
+            PrintNested( "A cigarette tarantula lies buried in the ash, preying on the empty joint." )
+        else:
+            PrintNested( "A cigarette tarantula lies buried in the ash, its leg butts sticking out in a silent prowl." )
 
 lr_seqtrash_undertable = "Check the destruction under the table."
 

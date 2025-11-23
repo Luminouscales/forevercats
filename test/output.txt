@@ -1,9 +1,15 @@
-[ ["[ELECTROCHEMISTRY] Wait. Wait, look.
-"], ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.
-"], ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt.
-"], ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy.
-"], ["[ELECTROCHEMISTRY] Well, you going for it?
-"], ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter.
-"], ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence.
-"], ["[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.
-"], ["[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold."], ]
+[ ["Carefully you reach inside and hoist the joint in between two talons, tapping the ash off lightly.
+"], ["It's barely touched, despite that its creator clearly put some love into it.
+"], ["The ground up weed sits snugly inside the carefully rolled paper. The filter has an almost mathematical zigzag to it, fitting perfectly inside.
+"], ["You swiftly light its charred end, and pull. The air flow is magnificent, smoke hitting your throat with little effort.
+"], ["It tastes as wonderful as every time, holding your lungs tight in a jagged, burning embrace.
+"], ["Your chest flattens in rest and the smoke wistfully relents to the yellow of the room.
+"], ["...
+"], ["[SERENDIPITY] You used to be joined like this with the love of this world, sharing embers with distant lips, warm in the streetlights of the night. Now, so far away, alone, even the stars are locked in the white brick ceiling.
+"], ["After an idle moment you drop the empty joint back in the bowl as fizzy softness stretches in your head.
+"], ["Numb pleasure coiling through your scales, dragging you down like a sleepy lover to bed.
+"], ["It yawns on the comedown, and for a moment its purring is louder than the ennui. Just for a moment.
+"], ["Then the thoughts return, but now you're a little high at least, for a moment.
+"], ["[ELECTROCHEMISTRY] Plenty more back home. This is just a one night stand.
+"], ["[DEBUGGING] It'll be easier for you to fall asleep now.
+"], ["[/SERENDIPITY] Feels like there's something out there, thoughts wandering the streetlights. Maybe go and check."], ]
