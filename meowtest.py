@@ -1,9 +1,11 @@
 # Everything is impermanent and transient. Especially bits on a disk. No use crying over flipped bits.
+# 23.11.25
 
 import random
 from functools import partial
 
 debug = True # Shows background stuff like flag changes and locked dialogue flags
+placeholder = "A Bytecat is sleeping here."
 
 # All flags, globally.
 tbl_flags = {
@@ -356,6 +358,9 @@ DSC_weedsleep = partial( DoSkillCheck,
     "[DEBUGGING] It'll be easier for you to fall asleep now.",
     "Debugging"
 )
+DSC_mefroomcat = partial( DoSkillCheck, 
+    "[ARS FELINE] It would be rude to disturb it.", 
+    "Ars feline" )
 
 
 
@@ -375,7 +380,7 @@ lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chi
     ["It'll take a while to make neat again, even for a sober person, and neither you or Mefedron will be sober for a good while. She can use the help nonetheless."]
     ]
 
-lr_seqhallway = "Leave the living room."
+lr_seqhallway = "Leave the living room out to the hallway"
 
 # Inputs for looking at the clutter
 # Bowl
@@ -512,21 +517,77 @@ def gotoLivingRoom_trash():
                 hub_livingroom_trash = False
 
 
-# HALLWAY
+# HALLWAY [hw]
+
+hw_inputs = [ "Go to the kitchen",
+    "Enter Mef's room",
+    "Go back to the living room"
+]
+
 def gotoHallway():
     hub_hallway = True
-    texthub = "The corridor pierces through her apartment like a tight vein, cold tiles connecting the kitchen and Mef's room with the light dimly spilling from the living room."
+    texthub = "The corridor pierces through her apartment like a vein, cold tiles connecting the kitchen and Mef's room with the light dimly spilling from the living room."
     # Kitchen
     # Mef's room
     # Living room
     while hub_hallway:
-        treeinput = 
+        treeinput = doinput( texthub, hw_inputs )
+        match treeinput:
+            case 1: 
+                gotoKitchen(), 
+                hub_hallway = False
+            case 2: 
+                PrintNested( "There's an ashy cat curled up on the doorhandle. You can't go in." ), 
+                DSC_mefroomcat()
+                skip()
+            case 3: 
+                hub_hallway = False, 
+                gotoLivingRoom()
 
-# Electrochemistry # 
+# KITCHEN (ki)
 
-# Ars feline
-# Encyclopedia
-# Debugging
+DSC_fridge = partial( DoSkillCheck, 
+    "[DEBUGGING] This means no breakfast tomorrow. Just tea and cigarettes.",
+    "Debugging"
+)
+
+ki_inputs = [ "Open the fridge", "Look out the window", "Search the tabletops", "Go back to the hallway" ]
+
+ki_fridge = [["You need not open the fridge to know the penury that is inside. Half-empty condiments sit scattered furtively, and not much else. Coffee milk."],
+    ["You can taste the clear liquid in the vodka bottle in your nose. It makes you wince."],
+    ["People in her circumstances don't eat a lot. Not inside, alone, at least."],
+    [DSC_fridge]
+]
+
+ki_window = [ ["Quietude. Fleeting squares of light on your tiny skyscrapers. Hundreds of rooms in parallel, reluctant of one another."], 
+    ["Street lights turn green, yellow, red, but no one passes by."], ]
+ki_window_stargazing = [ ["[SERENDIPITY] No one ascertains that there is yet hope, there is someone to fight for, perhaps someone to take you in."], 
+ ["[SERENDIPITY] Air and snow, steel trees and concrete. A vehicle passes by. They don't bother to stop at the red light."], 
+ ["[SERENDIPITY] They have somewhere to be, perhaps a cosy room?..."], 
+ ["[SERENDIPITY] An apartment, a modest speck upon the universe's destiny, your everything, and everything that belongs to you, your locus, where you wake and dream, fall tears and find pleasure."], 
+ ["[SERENDIPITY] From the window you see a dying soul."], ]
+
+def gotoKitchen():
+    hub_kitchen = True
+    texthub = placeholder
+    # Look in the fridge
+    # Look out the window
+    # Grab the lighter
+    # Go back
+    while hub_kitchen:
+        treeinput = doinput(texthub, ki_inputs)
+        match treeinput:
+            case 1: PrintNested( ki_fridge )
+            case 2: 
+                PrintNested(ki_window),
+                if not ReturnFlag( "lr_smokedjoint" ):
+                    PrintNested( "You're too sober for stargazing.")
+                else:
+                    PrintNested( ki_window_stargazing )
+            case 3: print(placeholder)
+            case 4:
+                hub_kitchen = False, gotoHallway()
+
 
 
 # One way to get to that street is by meeting [Blank], working on their car. You can talk to them by having Electrochem recognise the bumper sticker, or Debugging remembering what the issue might be.
