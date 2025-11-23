@@ -15,6 +15,7 @@ tbl_flags = {
     'lr_tookjoint': False, # Lynx has taken the joint
     'lr_smokedjoint': False, # Lynx has smoked the joint
     'lr_havelighter': True, # Grabbed the lighter from the kitchen
+    'lr_wherelighter': False # Currently looking for the lighter
 }
 
 # Skillpoints
@@ -35,7 +36,11 @@ def PrintDebug(text):
 # Gives the current bool of the flag in string
 # booolea yea yea
 def ReturnFlag(flag):
-    return tbl_flags[flag]
+    if flag not in tbl_flags:
+        input(f"YOU MISSPELLED THE {flag} FLAG!!! returning False as a fallback")
+        return False
+    else:
+        return tbl_flags[flag]
 
 # Sets the given flag to given bool. Shows if debug enabled
 def SetFlag( flag, bool ):
@@ -365,7 +370,8 @@ DSC_mefroomcat = partial( DoSkillCheck,
 
 
 lr_seqceiling = "Gaze at the ceiling."
-lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive gaze."], ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
+lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive gaze."], 
+    ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
     ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
     [DSC_sdangry]]
 
@@ -391,7 +397,7 @@ lr_seqtrash_bowl = "Curiously peep into the cereal bowl."
 lr_seqtrash_bowl_r = [["An inconspicuous bowl."], 
     ["Okay, no. It looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
     [DSC_ecbowl],
-    ["A nasty little image of filling the bowl with milk intrudes on your mind and it makes you shiver."],]
+    ["A nasty little image of filling the bowl with milk intrudes on your mind, it makes you shiver."],]
 
 lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."], 
     ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned."], 
@@ -586,7 +592,8 @@ def gotoKitchen():
                     PrintNested( ki_window_stargazing )
             case 3: print(placeholder)
             case 4:
-                hub_kitchen = False, gotoHallway()
+                hub_kitchen = False, 
+                gotoHallway()
 
 
 
