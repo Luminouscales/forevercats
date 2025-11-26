@@ -620,7 +620,6 @@ def lr_mephsequence():
                 case 1:
                     PrintNested( "[ELECTROCHEMISTRY] Come on now. Your nose is runny and you heart is running a little faster at the very thought. Your body's talking to you." )
                     DSC_debugwarn(wait=True)
-                    # FIXME Sure, you can skip() after the skillcheck but what if it doesn't play?
                 case 2:
                     PrintNested( txt2 )
                     DSC_eyeballing(wait=True)
@@ -641,8 +640,8 @@ def lr_mephsequence():
                             case 3:
                                 PrintNested([["It's stereotypically white, and ground into fineness, forming tiny clumps, like snow on three branches."], ["Your pink muzzle tells you it has a powerful smell, though you can't quite put your finger on it."] ])
                                 DSC_stimsmell(wait=True)
-                                DSC_encnerd(wait=True)
-                                DSC_echater(wait=True)
+                                if DSC_encnerd(wait=True):
+                                    DSC_echater(wait=True)
                             case 4:
                                 PrintNested("[ELECTROCHEMISTRY] Really? You seem to be feeling veeery strongly about the powder inside. Who knows what it could be? How it could make you feel...", fake="No, seriously, I'm putting it down.")
                                 PrintNested( txt3 )
