@@ -157,7 +157,6 @@ tbl_skillpoints = {
 
 # Text is the text to be printed and skill is the associated skill, checking if it's active. If not, there's only a chance it will speak.
 # We return False here when nothing is said so that you don't have to enter through an empty line.
-
 # You have to specify wait=True when calling the function outside of a dialogue table because otherwise it will skip
 def DoSkillCheck( text, skill, wait=False ):
     if skill not in tbl_skillpoints:
