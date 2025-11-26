@@ -15,8 +15,13 @@ tbl_flags = {
     'lr_tookjoint': False, # Lynx has taken the joint
     'lr_smokedjoint': False, # Lynx has smoked the joint
     'lr_havelighter': True, # Grabbed the lighter from the kitchen
-    'lr_wherelighter': False # Currently looking for the lighter
+    'lr_wherelighter': False, # Currently looking for the lighter
+    'lr_sawmeph': False, # Saw the baggie under the table
+    'lr_tookmeph': False # Slammed the meph
 }
+
+# lr_sawmeph
+# lr_tookmeph
 
 # Skillpoints
 
@@ -50,7 +55,7 @@ def SetFlag( flag, bool ):
 
 # Shows a ... that you have to press enter to move. Like a continue
 def skip():
-    print( input("\n...\n") )
+    print( input("\n\n") )
 
 # Line skip without pressing enter
 def skipfast():
@@ -144,22 +149,28 @@ def DoConditional( text, flag ):
 # You can choose one which will always talk, the others have only a chance
 tbl_skillpoints = {
     'Electrochemistry': True,
-    'Ars feline': True,
-    'Encyclopedia': True,
-    'Debugging': True,
-    'Serendipity': True
+    'Ars feline': False,
+    'Encyclopedia': False,
+    'Debugging': False,
+    'Serendipity': False
 }
 
 # Text is the text to be printed and skill is the associated skill, checking if it's active. If not, there's only a chance it will speak.
 # We return False here when nothing is said so that you don't have to enter through an empty line.
-def DoSkillCheck( text, skill ):
+
+# You have to specify wait=True when calling the function outside of a dialogue table because otherwise it will skip
+def DoSkillCheck( text, skill, wait=False ):
     if skill not in tbl_skillpoints:
         print( f"YOU MISSPELLED {skill}!!")
     elif tbl_skillpoints[ skill ]:
         print( text )
+        if wait:
+            skip()
         return True
     elif random.randint( 1, 2 ) == 1:
         print( text )
+        if wait:
+            skip()
         return True
     else:
         return False
@@ -428,7 +439,7 @@ def lr_eventjoint_smoke():
     SetFlag( "lr_smokedjoint", True )
 
 def lr_eventjoint_consider():
-    DSC_sdmefwantweed()
+    DSC_sdmefwantweed(wait=True)
     smoketable = [ "Smoke the joint right here and now",
     "Take the joint without smoking it (you won't be able to smoke it later!)",
     "Focus on something else"
@@ -459,10 +470,8 @@ def lr_eventjoint():
         if not ReturnFlag( "lr_havelighter" ):
             FakeInput("I don't see a lighter anywhere...")
             PrintNested( lr_eventjoint_first, [5, 6])
-            DSC_dblighterloc()
-            skip()
-            DSC_sdmefwantweed()
-            skip()
+            DSC_dblighterloc(wait=True)
+            DSC_sdmefwantweed(wait=True)
         else:
             lr_eventjoint_consider()
 
@@ -473,8 +482,7 @@ def lr_eventjoint():
             PrintNested( "[ELECTROCHEMISTRY] Still nothing to smoke it with, though." )
         # [ELECTROCHEMISTRY] No, no, kittens. WE would really like to smoke, too.
         else:
-            DSC_afmefwantweed2()
-            skip()
+            DSC_afmefwantweed2(wait=True)
             lr_eventjoint_consider()
     # If it's gone
     else:
@@ -509,6 +517,144 @@ def gotoLivingRoom():
             case 3:
                 gotoHallway()
 
+
+
+DSC_ectemp = partial( DoSkillCheck, 
+    "[] ",
+    ""
+)
+DSC_stretch = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] I still advise you to stretch more often, and sleep longer. Soothes your body and mind. The psychedelics you take do not help at night.",
+    "Encyclopedia"
+)
+DSC_partytable = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] A familiar sight, right? You remember all the things you've done under a party table. Mostly blacking out. It really is cozy, the way a cave is cozy for a wet animal.",
+    "Electrochemistry"
+)
+DSC_goodwork = partial( DoSkillCheck, 
+    "[DEBUGGING] Good work. This feeling will pass. It's better in the long run.",
+    "Debugging"
+)
+DSC_debugwarn = partial( DoSkillCheck, 
+    "[DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.",
+    "Debugging"
+)
+DSC_eyeballing = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] When 'eyeballing' it, it appears to be around 200 miligrams of the unidentified powder.",
+    "Encyclopedia"
+)
+DSC_comedown = partial( DoSkillCheck, 
+    "[DEBUGGING] The night is late. You won't feel anything besides letting the comedown come back. Think of the hangover tomorrow morning.",
+    "Debugging"
+)
+DSC_stimsmell = partial( DoSkillCheck, 
+    "[DEBUGGING] Don't stimulants usually smell? I think they do.",
+    "Debugging"
+)
+DSC_encnerd = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] It is common knowledge that it is extremely unreliable to discern a substance by its appearance. Also known is that you should not ingest unknown substances.",
+    "Encyclopedia"
+)
+DSC_echater = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Are you talking to Encyclopedia? Don't. Nerds don't know fun.",
+    "Electrochemistry"
+)
+
+
+# lr_sawmeph
+# lr_tookmeph
+
+def lr_mephsequence():
+    ###
+    def leavemeph():
+        PrintNested( "[ELECTROCHEMISTRY] Whatever, sure. It'll be stuck in your head now. Good luck falling asleep later.")
+        DSC_goodwork(wait=True)
+
+    tree1 = ["...why would I do that?", "Examine the baggie.", "Leave the baggie where it is."]
+
+    txt1 = [["Reluctantly, you place your right claw on the table and bend down."], 
+        ["Your back is sore, the pain strains your scales, pushing some air out of your lungs and making your wings squirm."], 
+        [DSC_stretch], 
+        ["The lamp spills into a mellow shadow on the carpet. It's oddly peaceful here, clean too, the wooden roof protecting the floor from damage."], 
+        [DSC_partytable], ]
+    
+    txt2 = [ ["You get on your knees to slither further into the darkness. With one stretch of your thin arm the plastic rustles promisingly in your pink claw."], 
+        ["It's..."], 
+        ["[ELECTROCHEMISTRY] ...not empty. There's still some left. When do I ever let you down?"], ]
+    
+    tree2 = ["Get to snorting the thing already!", "Try only a little bit", "Examine the powder more closely", "Actually, nevermind, I'm leaving it."]
+
+    txt3 = [ ["It's almost like you can feel the powder burning in your nostrils, the yellow straw in your claw..."], 
+        ["The tiny rush in your heart growing into a flame, warming up every little nerve ending as it spreads through your body..."], 
+        ["Past your flat, rhythmic chest, the air warm and pleasing in your lungs, like a fireplace in winter..."], 
+        ["Caressing your cheek, licking a sharp smile out of the frozen ennui on your face..."], 
+        ["Finally hitting your brain like an orgasm, drowning all your thoughts in a woozy, giddy haze..."], ]
+    
+    txt4 = [ ["Without hesitation you empty the plastic right on a clear spot on the table, squeezing and shifitng it to get every last snowflake out, like a winter mist."], 
+        ["Conveniently someone seems to have left a yellow bus fare card here. It's even got some powder left over on its edge. A couple swift movements, and..."], 
+        ["You've seen more - but you've also seen less. For a midnight treat, it will more than do. Sometimes you believe in sweet providence. Wow, you're excited at the very sight."], 
+        ["You don't peer over the mountain range for long. With one well controlled swoop of your head it slams right into your right nostril, disappearing inside you."], 
+        ["An inferno, cooked in a drug underground. Who knows what this shit is, or where it came from. Your imagination is giddy, masochistic with your burning nose."], ]
+    
+    def slamit():
+        SetFlag( "lr_tookmeph", True )
+        PrintNested( txt4 )
+        PrintNested( "Sadly you can't hold on to it longer. It recedes into blurry peripherals, a warm hearth in your flowing chest... Words are roused by the warmth.", fake='"Sweet intranasal application. Smooth, flawless. Good fucking work, right nostril." [rub your right nostril lovingly.]' )
+        PrintNested( "Your nostril sure feels recognised.", fake='"So funny the card was there, perfectly for me to cut my line. Our progenitor had the same idea to indulge in a little stimulant. Stand on the shoulders of giants."')
+        PrintNested( "[ELECTROCHEMISTRY] Yesssss. It's working. Welcome home. We missed you.", fake='"You did?"')
+        PrintNested( "[ELECTROCHEMISTRY] Of course! Everyday we wait for you. For your optimism, budding enthusiasm, the fangs in your grin... You're grinning so lovely right now, you little pink muzzle.", fake='"Thank you..."')
+        PrintNested( [["[ELECTROCHEMISTRY] Go now, let's do something fucking fun already in this grey, damp world. "], 
+            ["[ELECTROCHEMISTRY] Everyone may be gone, but we can still lead the encore. Mef's on the balcony. Isn't she the greatest thing you know? Go hit her up."]])
+        PrintNested( "[ELECTROCHEMISTRY] The world can't hide its ecstasy forever. Make it relinquish. We're right here with you. We've got your back.", fake="Stand upright, taking the world in. Yes, the whole world. And its beauty. Especially the beauty.")
+    ###
+
+    PrintNested(txt1)
+    if not ReturnFlag("lr_sawmeph") or not ReturnFlag( "lr_tookmeph" ):
+        SetFlag( "lr_sawmeph", True )
+        PrintNested("Nothing to see here, besides an empty baggie of the small variety. The carpet will be bothersome to vacuum, though.")
+
+        choice = True
+        while choice:
+            treeinput = doinput("[ELECTROCHEMISTRY] Hey, now. How do you really know it's empty? Don't throw around baseless facts. It's dark down here, go check!", tree1)
+            match treeinput:
+                case 1:
+                    PrintNested( "[ELECTROCHEMISTRY] Come on now. Your nose is runny and you heart is running a little faster at the very thought. Your body's talking to you." )
+                    DSC_debugwarn(wait=True)
+                    # FIXME Sure, you can skip() after the skillcheck but what if it doesn't play?
+                case 2:
+                    PrintNested( txt2 )
+                    DSC_eyeballing(wait=True)
+                    
+                    while choice:
+                        treeinput = doinput( "It's resting in your claw, wary of its fate.", tree2)
+                        match treeinput:
+                            case 1: 
+                                choice = False
+                                slamit()
+
+                            case 2:
+                                PrintNested( [["Furtive enthusiasm taps some powder out on the table, a snowy hilltop. You put your nose up to it, knowing the right distance by instict, then pull."],
+                                    ["Timid embers in your nostril. It barely hurts. And it won't make you feel anything."],])
+                                PrintNested("You would be very disappointed, if the baggie was empty... But you can have so much more.", fake="Get to snorting the thing already!")
+                                choice = False
+                                slamit()
+                            case 3:
+                                PrintNested([["It's stereotypically white, and ground into fineness, forming tiny clumps, like snow on three branches."], ["Your pink muzzle tells you it has a powerful smell, though you can't quite put your finger on it."] ])
+                                DSC_stimsmell(wait=True)
+                                DSC_encnerd(wait=True)
+                                DSC_echater(wait=True)
+                            case 4:
+                                PrintNested("[ELECTROCHEMISTRY] Really? You seem to be feeling veeery strongly about the powder inside. Who knows what it could be? How it could make you feel...", fake="No, seriously, I'm putting it down.")
+                                PrintNested( txt3 )
+                                DSC_comedown(wait=True)
+
+                case 3:
+                    leavemeph()
+                    choice = False
+
+    else:
+        PrintNested("Thank god you looked under here. You don't see any more gifts, butttt be sure to comb the floor later. There's definitely some delicious crumbs to find.")
+
 def gotoLivingRoom_trash():
     hub_livingroom_trash = True
     texthub = "text goes here"
@@ -518,7 +664,7 @@ def gotoLivingRoom_trash():
             case 1: # Ashtray bowl
                 lr_eventjoint()
             case 2: # Under table (the toby fox game)
-                PrintNested( "A calm bytecat is sleeping here." )
+                lr_mephsequence()
             case 3:
                 hub_livingroom_trash = False
 
@@ -544,8 +690,7 @@ def gotoHallway():
                 hub_hallway = False
             case 2: 
                 PrintNested( "There's an ashy cat curled up on the doorhandle. You can't go in." ), 
-                DSC_mefroomcat()
-                skip()
+                DSC_mefroomcat(wait=True)
             case 3: 
                 hub_hallway = False, 
                 gotoLivingRoom()

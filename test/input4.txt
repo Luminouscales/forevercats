@@ -6,17 +6,37 @@ The lamp spills into a mellow shadow on the carpet. It's oddly peaceful here, cl
 Nothing to see here, besides an empty baggie of the small variety. The carpet will be bothersome to vacuum, though.
 [ELECTROCHEMISTRY] Hey, now. How do you know it's really empty? Don't throw around baseless facts. It's dark down here, go check!
 	# ...why would I do that?
-		# [ELECTROCHEMISTRY] Come on now. Your heart is running a little faster at the very thought. Your body's talking to you.
+		# [ELECTROCHEMISTRY] Come on now. Your nose is runny and you heart is running a little faster at the very thought. Your body's talking to you.
 		# [DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.
 	# Examine the baggie.
 		# You get on your knees to slither further into the darkness. With one stretch of your thin arm the plastic rustles promisingly in your pink claw.
 		# It's...
 		# [ELECTROCHEMISTRY] ...not empty. There's still some left. When do I ever let you down?
-			# Often.
-			[ELECTROCHEMISTRY] Shut up.
 		# [ENCYCLOPEDIA] When 'eyeballing' it, it appears to be around 200 miligrams of the unidentified powder.
 		# Get to snorting the thing already!
+			# Without hesitation you empty the plastic right on a clear spot on the table, squeezing and shifitng it to get every last snowflake out, like a winter mist.
+			# Conveniently someone seems to have left a yellow bus fare card here. It's even got some powder left over on its edge. A couple swift movements, and...
+			# You've seen bigger. But you've also seen less. For a midnight treat, it will more than do. Sometimes you believe in sweet providence. Wow, you're excited at the very sight.
+			# You don't peer over the mountain range for long. In a barely controlled movement it slams right into your right nostril, disappearing inside you.
+			# An inferno, cooked in a drug underground. Who knows what this shit is, or where it came from. Your imagination is giddy, masochistic with your burning nose.
+			# Sadly you can't hold on to it longer. It recedes into blurry peripherals, a warm hearth in your flowing chest... Words are roused by the warmth.
+			# "Sweet intranasal application. Smooth, flawless. Good fucking work, right nostril." [rub your right nostril lovingly.]
+			# "So funny the card was there, perfectly for you to cut your line. Your progenitor had the same idea to slam the good shit. Stand on the shoulders of giants."
+			# [ELECTROCHEMISTRY] Yesssss. It's working. Welcome home. We missed you. [You did?]
+			# [ELECTROCHEMISTRY] Of course! Everyday we wait for you. Your optimism, budding enthusiasm, the fangs in your grin... You're grinning so lovely right now, you little pink muzzle.
+			# Thank you...
+			# [ELECTROCHEMISTRY] Go now, let's do something fucking fun already in this grey, damp world. 
+			# [ELECTROCHEMISTRY] Everyone may be gone, but we can still lead the encore. Mef's on the balcony. Isn't she the greatest thing you know? Go hit her up.
+			# [ELECTROCHEMISTRY] The world can't hide its ecstasy forever. Make it relinquish. We're right here with you. We've got your back.
+			# ACT: Stand upright, taking the world in. Yes, the whole world. And its beauty. Especially the beauty.
 		# Snort only a little bit.
+			# Furtive enthusiasm taps some powder out on the table, a snowy hilltop. You put your nose up to it, knowing the right distance by instict, then pull.
+			# Timid embers in your nostril. It barely hurts. And it won't make you feel anything.
+			# You would be very disappointed, if the baggie was empty... But you can have so much more.
+			# ACT: Leave the rest for later.
+				# What? Stop being so indecisive.
+			# !
+			
 		# Examine the powder more closely.
 			# It's stereotypically white, and ground into fineness, forming tiny clumps, like snow on three branches.
 		 	# Your pink muzzle tells you it has a powerful smell, though you can't quite put your finger on it.
@@ -33,7 +53,7 @@ Nothing to see here, besides an empty baggie of the small variety. The carpet wi
 				# Caressing your cheek, licking a sharp smile out of the frozen ennui on your face...
 				# Finally hitting your brain like an orgasm, drowning all your thoughts in a woozy, giddy haze...
 				# [DEBUGGING] The night is late. You won't feel anything besides letting the comedown come back. Think of the hangover tomorrow morning.
-				# Snort the whole thing already.
+				# Snort the whole thing already!
 
 	# Leave the baggie where it is.
 		# [ELECTROCHEMISTRY] Whatever, sure. It'll be stuck in your head now. Good luck falling asleep later.

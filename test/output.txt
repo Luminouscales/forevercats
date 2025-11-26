@@ -1,6 +1,5 @@
-[ ["[SERENDIPITY] No one ascertains that there is yet hope, there is someone to fight for, perhaps someone to take you in.
-"], ["[SERENDIPITY] Air and snow, steel trees and concrete. A vehicle passes by. They don't bother to stop at the red light.
-"], ["[SERENDIPITY] They have somewhere to be, perhaps a cosy room?...
-"], ["[SERENDIPITY] An apartment, a modest speck upon the universe's destiny, your everything, and everything that belongs to you, your locus, where you wake and dream, fall tears and find pleasure.
-"], ["[SERENDIPITY] From the window you see a dying soul.
-"], ]
+[ ["Without hesitation you empty the plastic right on a clear spot on the table, squeezing and shifitng it to get every last snowflake out, like a winter mist.
+"], ["Conveniently someone seems to have left a yellow bus fare card here. It's even got some powder left over on its edge. A couple swift movements, and...
+"], ["You've seen bigger. But you've also seen less. For a midnight treat, it will more than do. Sometimes you believe in sweet providence. Wow, you're excited at the very sight.
+"], ["You don't peer over the mountain range for long. In a barely controlled movement it slams right into your right nostril, disappearing inside you.
+"], ["An inferno, cooked in a drug underground. Who knows what this shit is, or where it came from. Your imagination is giddy, masochistic with your burning nose."], ]
