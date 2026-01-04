@@ -14,7 +14,7 @@ tbl_flags = {
     'lr_sawjoint': False, # Lynx has seen the joint in the bowl already
     'lr_tookjoint': False, # Lynx has taken the joint
     'lr_smokedjoint': False, # Lynx has smoked the joint
-    'lr_havelighter': True, # Grabbed the lighter from the kitchen
+    'lr_havelighter': False, # Grabbed the lighter from the kitchen
     'lr_wherelighter': False, # Currently looking for the lighter
     'lr_sawmeph': False, # Saw the baggie under the table
     'lr_tookmeph': False # Slammed the meph
@@ -338,7 +338,7 @@ DSC_sdshots = partial( DoSkillCheck,
     "Serendipity"
 )
 DSC_ecdump = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] This is the natural environment of the afterparty. I can't blame anyone - teeth-clenching peaks of euphoria aren't a time to be neat and tidy. You know that. The sight is homely to you.",
+    "[ELECTROCHEMISTRY] This is the natural environment of the afterparty. I can't blame anyone - the spirals of alcohol abuse aren't a time to be neat and tidy. You know that. The sight is homely to you.",
     "Electrochemistry"
 )
 DSC_ectemp = partial( DoSkillCheck, 
@@ -350,8 +350,8 @@ DSC_ecbowl = partial( DoSkillCheck,
     "Electrochemistry"
 )
 DSC_dblighterloc = partial( DoSkillCheck, 
-    "[DEBUGGING] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.",
-    "Debugging"
+    "[ENCYCLOPEDIA] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.",
+    "Encyclopedia"
 )
 DSC_sdmefwantweed = partial( DoSkillCheck, 
     "[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.",
@@ -360,6 +360,10 @@ DSC_sdmefwantweed = partial( DoSkillCheck,
 DSC_afmefwantweed2 = partial( DoSkillCheck, 
     "[ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.",
     "Ars feline"
+)
+DSC_lxwantweed = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] No, no, felines. WE would really like to smoke, too.",
+    "Electrochemistry"
 )
 DSC_embers = partial( DoSkillCheck, 
     "[SERENDIPITY] You used to be joined like this with the love of the world, sharing embers with distant lips, warm in the streetlights of the night. Now, so far away, alone, even the stars are locked in the white brick ceiling.", 
@@ -384,6 +388,8 @@ lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive ga
     ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
     ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
     [DSC_sdangry]]
+    # FIXME If a skill function is the last in a table, it will force you to skip twice if it doesn't play
+    # Just fix it later
 
 lr_seqtrash = "Try to concern yourself with the trash around the room."
 lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chips."],
@@ -467,6 +473,7 @@ def lr_eventjoint():
         PrintNested("[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned.", fake="Oh, it's a joint.")
         PrintNested( lr_eventjoint_first, [2, 4])
         if not ReturnFlag( "lr_havelighter" ):
+            SetFlag("lr_wherelighter", True)
             FakeInput("I don't see a lighter anywhere...")
             PrintNested( lr_eventjoint_first, [5, 6])
             DSC_dblighterloc(wait=True)
@@ -479,9 +486,9 @@ def lr_eventjoint():
         PrintNested("The joint is happy to see you return, resting in the ash. You can feel the positive energy emanating from it.")
         if not ReturnFlag( "lr_havelighter" ):
             PrintNested( "[ELECTROCHEMISTRY] Still nothing to smoke it with, though." )
-        # [ELECTROCHEMISTRY] No, no, kittens. WE would really like to smoke, too.
         else:
-            DSC_afmefwantweed2(wait=True)
+            if DSC_afmefwantweed2(wait=True):
+                DSC_lxwantweed(wait=True)
             lr_eventjoint_consider()
     # If it's gone
     else:
@@ -503,9 +510,13 @@ lr_inputs = [lr_seqceiling, lr_seqtrash, lr_seqhallway ]
 
 lr_trash_inputs = [lr_seqtrash_bowl, lr_seqtrash_undertable, lr_seqtrash_goback ]
 
+livingroomhub = "The living room feels like an epicentre of conciousness, white popcorn walls and a " \
+"yellow ceiling light protecting you from the crushing unknown of the dark, distant city streets. Even the window curtains are squinting, scared of the horizon, only letting" \
+"a few black stripes through. At least the various tables feel cozy under their blankets of empty packagings and random items."
+
 def gotoLivingRoom():
     hub_livingroom = True
-    texthub = "text goes here"
+    texthub = livingroomhub
     while hub_livingroom:
         treeinput = doinput( texthub, lr_inputs )
         match treeinput:
@@ -571,7 +582,7 @@ def lr_mephsequence():
 
     tree1 = ["...why would I do that?", "Examine the baggie.", "Leave the baggie where it is."]
 
-    txt1 = [["Reluctantly, you place your right claw on the table and bend down."], 
+    txt1 = [["Reluctantly, you place your right claw on the table and lean down."], 
         ["Your back is sore, the pain strains your scales, pushing some air out of your lungs and making your wings squirm."], 
         [DSC_stretch], 
         ["The lamp spills into a mellow shadow on the carpet. It's oddly peaceful here, clean too, the wooden roof protecting the floor from damage."], 
@@ -587,7 +598,7 @@ def lr_mephsequence():
         ["The tiny rush in your heart growing into a flame, warming up every little nerve ending as it spreads through your body..."], 
         ["Past your flat, rhythmic chest, the air warm and pleasing in your lungs, like a fireplace in winter..."], 
         ["Caressing your cheek, licking a sharp smile out of the frozen ennui on your face..."], 
-        ["Finally hitting your brain like an orgasm, drowning all your thoughts in a woozy, giddy haze..."], ]
+        ]
     
     txt4 = [ ["Without hesitation you empty the plastic right on a clear spot on the table, squeezing and shifitng it to get every last snowflake out, like a winter mist."], 
         ["Conveniently someone seems to have left a yellow bus fare card here. It's even got some powder left over on its edge. A couple swift movements, and..."], 
@@ -605,6 +616,7 @@ def lr_mephsequence():
         PrintNested( [["[ELECTROCHEMISTRY] Go now, let's do something fucking fun already in this grey, damp world. "], 
             ["[ELECTROCHEMISTRY] Everyone may be gone, but we can still lead the encore. Mef's on the balcony. Isn't she the greatest thing you know? Go hit her up."]])
         PrintNested( "[ELECTROCHEMISTRY] The world can't hide its ecstasy forever. Make it relinquish. We're right here with you. We've got your back.", fake="Stand upright, taking the world in. Yes, the whole world. And its beauty. Especially the beauty.")
+        gotoLivingRoom()
     ###
 
     PrintNested(txt1)
@@ -643,15 +655,18 @@ def lr_mephsequence():
                                     DSC_echater(wait=True)
                             case 4:
                                 PrintNested("[ELECTROCHEMISTRY] Really? You seem to be feeling veeery strongly about the powder inside. Who knows what it could be? How it could make you feel...", fake="No, seriously, I'm putting it down.")
-                                PrintNested( txt3 )
                                 DSC_comedown(wait=True)
+                                PrintNested( txt3 )
+                                PrintNested("Finally hitting your brain like an orgasm, drowning all your thoughts in a woozy, giddy haze...", fake="Let yourself be happy.")
+                                
+                                slamit()
 
                 case 3:
                     leavemeph()
                     choice = False
 
     else:
-        PrintNested("Thank god you looked under here. You don't see any more gifts, butttt be sure to comb the floor later. There's definitely some delicious crumbs to find.")
+        PrintNested("[ELECTROCHEMISTRY] Thank god you looked under here. You don't see any more gifts, butttt be sure to comb the floor later. There's definitely some delicious crumbs to find.")
 
 def gotoLivingRoom_trash():
     hub_livingroom_trash = True
@@ -711,14 +726,14 @@ ki_fridge = [["You need not open the fridge to know the penury that is inside. H
 ki_window = [ ["Quietude. Fleeting squares of light on your tiny skyscrapers. Hundreds of rooms in parallel, reluctant of one another."], 
     ["Street lights turn green, yellow, red, but no one passes by."], ]
 ki_window_stargazing = [ ["[SERENDIPITY] No one ascertains that there is yet hope, there is someone to fight for, perhaps someone to take you in."], 
- ["[SERENDIPITY] Air and snow, steel trees and concrete. A vehicle passes by. They don't bother to stop at the red light."], 
- ["[SERENDIPITY] They have somewhere to be, perhaps a cosy room?..."], 
- ["[SERENDIPITY] An apartment, a modest speck upon the universe's destiny, your everything, and everything that belongs to you, your locus, where you wake and dream, fall tears and find pleasure."], 
- ["[SERENDIPITY] From the window you see a dying soul."], ]
+    ["[SERENDIPITY] Air and snow, steel trees and concrete. A vehicle passes by. They don't bother to stop at the red light."], 
+    ["[SERENDIPITY] They have somewhere to be, perhaps a cosy room?..."], 
+    ["[SERENDIPITY] An apartment, a modest speck upon the universe's destiny, your everything, and everything that belongs to you, your locus, where you wake and dream, fall tears and find pleasure."], 
+    ["[SERENDIPITY] From the window you see a dying soul..."], ]
 
 def gotoKitchen():
     hub_kitchen = True
-    texthub = placeholder
+    texthub = "The kitchen tiles feel cool underneath your sockless paws. An overabundance of white light clashes with the pitch darkness just outside, spotted with street lamps. Distant, nocturnal cars hum through the cracked window."
     # Look in the fridge
     # Look out the window
     # Grab the lighter
@@ -733,7 +748,14 @@ def gotoKitchen():
                     PrintNested( "You're too sober for stargazing.")
                 else:
                     PrintNested( ki_window_stargazing )
-            case 3: print(placeholder)
+            case 3:
+                PrintNested( [["It's oddly clean here, in contrast with the rest of the apartment. You run your claw against the smooth countertop. Feels like home."],
+                    ["You're sure that if she actually used this place, it would look much worse."],
+                    ["Cooking something together would be fun, the way you do with Shine. Would Mef even be interested? Probably not."],
+                    ["The thought of all three of you in the kitchen together is amusing."] ] )
+                if ReturnFlag( "lr_wherelighter" ) and not ReturnFlag( "lr_havelighter"):
+                    PrintNested( "The bright yellow of your lighter catches your eye. It fits right in the palm of your claw, ready to burn for you again.")
+                    SetFlag( "lr_havelighter", True )
             case 4:
                 hub_kitchen = False, 
                 gotoHallway()
