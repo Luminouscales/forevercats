@@ -711,7 +711,7 @@ def gotoHallway():
 # KITCHEN (ki)
 
 DSC_fridge = partial( DoSkillCheck, 
-    "[DEBUGGING] This means no breakfast tomorrow. Just tea and cigarettes.",
+    "[DEBUGGING] This means no breakfast tomorrow. Just coffee and cigarettes.",
     "Debugging"
 )
 
