@@ -11,6 +11,106 @@ skip = d.skip
 DoConditional = d.DoConditional
 FakeInput = d.FakeInput
 
+# /-------------
+# SKILL CHECKS
+# /-------------
+
+DSC_ectemp = partial( DoSkillCheck, 
+    "[] ",
+    ""
+)
+DSC_stretch = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] I still advise you to stretch more often, and sleep longer. Soothes your body and mind. The psychedelics you take do not help at night.",
+    "Encyclopedia"
+)
+DSC_partytable = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] A familiar sight, right? You remember all the things you've done under a party table. Mostly blacking out. It really is cozy, the way a cave is cozy for a wet animal.",
+    "Electrochemistry"
+)
+DSC_goodwork = partial( DoSkillCheck, 
+    "[DEBUGGING] Good work. This feeling will pass. It's better in the long run.",
+    "Debugging"
+)
+DSC_debugwarn = partial( DoSkillCheck, 
+    "[DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.",
+    "Debugging"
+)
+DSC_eyeballing = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] When 'eyeballing' it, it appears to be around 200 miligrams of the unidentified powder.",
+    "Encyclopedia"
+)
+DSC_comedown = partial( DoSkillCheck, 
+    "[DEBUGGING] The night is late. You won't feel anything besides letting the comedown come back. Think of the hangover tomorrow morning.",
+    "Debugging"
+)
+DSC_stimsmell = partial( DoSkillCheck, 
+    "[DEBUGGING] Don't stimulants usually smell? I think they do.",
+    "Debugging"
+)
+DSC_encnerd = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] It is common knowledge that it is extremely unreliable to discern a substance by its appearance. Also known is that you should not ingest unknown substances.",
+    "Encyclopedia"
+)
+DSC_echater = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Are you talking to Encyclopedia? Don't. Nerds don't know fun.",
+    "Electrochemistry"
+)
+
+DSC_sdangry = partial( DoSkillCheck, 
+    "[SERENDIPITY] Somewhere, a few metres above your horns, someone sips a sweet, lukewarm tea in the kitchen, unable to sleep. Squinting, they are planning out the words of reprimand.", 
+    "Serendipity"
+)
+DSC_sdshots = partial( DoSkillCheck, 
+    "[SERENDIPITY] A couple are still full. Someone filled them, convinced their body could stomach another shot. That time never came.",
+    "Serendipity"
+)
+DSC_ecdump = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] This is the natural environment of the afterparty. I can't blame anyone - the spirals of alcohol abuse aren't a time to be neat and tidy. You know that. The sight is homely to you.",
+    "Electrochemistry"
+)
+DSC_ectemp = partial( DoSkillCheck, 
+    "[] ",
+    ""
+)
+DSC_ecbowl = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Everyone knows the morning cigarette is the most important meal of the day.",
+    "Electrochemistry"
+)
+DSC_dblighterloc = partial( DoSkillCheck, 
+    "[ENCYCLOPEDIA] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.",
+    "Encyclopedia"
+)
+DSC_sdmefwantweed = partial( DoSkillCheck, 
+    "[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.",
+    "Serendipity"
+)
+DSC_afmefwantweed2 = partial( DoSkillCheck, 
+    "[ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.",
+    "Ars feline"
+)
+DSC_lxwantweed = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] No, no, felines. WE would really like to smoke, too.",
+    "Electrochemistry"
+)
+DSC_embers = partial( DoSkillCheck, 
+    "[SERENDIPITY] You used to be joined like this with the love of the world, sharing embers with distant lips, warm in the streetlights of the night. Now, so far away, alone, " \
+    "even the stars are locked in the white brick ceiling.", 
+    "Serendipity"
+    )
+DSC_stand = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Plenty more back home. This joint was just a one night stand.",
+    "Electrochemistry"
+)
+DSC_weedsleep = partial( DoSkillCheck, 
+    "[DEBUGGING] It'll be easier for you to fall asleep now.",
+    "Debugging"
+)
+
+# /-----------------------------------------------------
+# SEQ: MEPH
+# /------------------------------------------------------
+# You found a baggie under the table. Will you slam it?
+# /-----------------------------------------------------
 
 def lr_mephsequence():
     ###
@@ -106,152 +206,11 @@ def lr_mephsequence():
     else:
         PrintNested("[ELECTROCHEMISTRY] Thank god you looked under here. You don't see any more gifts, butttt be sure to comb the floor later. There's definitely some delicious crumbs to find.")
 
-
-
-DSC_ectemp = partial( DoSkillCheck, 
-    "[] ",
-    ""
-)
-DSC_stretch = partial( DoSkillCheck, 
-    "[ENCYCLOPEDIA] I still advise you to stretch more often, and sleep longer. Soothes your body and mind. The psychedelics you take do not help at night.",
-    "Encyclopedia"
-)
-DSC_partytable = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] A familiar sight, right? You remember all the things you've done under a party table. Mostly blacking out. It really is cozy, the way a cave is cozy for a wet animal.",
-    "Electrochemistry"
-)
-DSC_goodwork = partial( DoSkillCheck, 
-    "[DEBUGGING] Good work. This feeling will pass. It's better in the long run.",
-    "Debugging"
-)
-DSC_debugwarn = partial( DoSkillCheck, 
-    "[DEBUGGING] I'll warn you, if there's actually something in it, it's very likely you won't be able to resist the urge. It's happened before.",
-    "Debugging"
-)
-DSC_eyeballing = partial( DoSkillCheck, 
-    "[ENCYCLOPEDIA] When 'eyeballing' it, it appears to be around 200 miligrams of the unidentified powder.",
-    "Encyclopedia"
-)
-DSC_comedown = partial( DoSkillCheck, 
-    "[DEBUGGING] The night is late. You won't feel anything besides letting the comedown come back. Think of the hangover tomorrow morning.",
-    "Debugging"
-)
-DSC_stimsmell = partial( DoSkillCheck, 
-    "[DEBUGGING] Don't stimulants usually smell? I think they do.",
-    "Debugging"
-)
-DSC_encnerd = partial( DoSkillCheck, 
-    "[ENCYCLOPEDIA] It is common knowledge that it is extremely unreliable to discern a substance by its appearance. Also known is that you should not ingest unknown substances.",
-    "Encyclopedia"
-)
-DSC_echater = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] Are you talking to Encyclopedia? Don't. Nerds don't know fun.",
-    "Electrochemistry"
-)
-
-# Living room skill dialogue
-DSC_sdangry = partial( DoSkillCheck, 
-    "[SERENDIPITY] Somewhere, a few metres above your horns, someone sips a sweet, lukewarm tea in the kitchen, unable to sleep. Squinting, they are planning out the words of reprimand.", 
-    "Serendipity"
-)
-DSC_sdshots = partial( DoSkillCheck, 
-    "[SERENDIPITY] A couple are still full. Someone filled them, convinced their body could stomach another shot. That time never came.",
-    "Serendipity"
-)
-DSC_ecdump = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] This is the natural environment of the afterparty. I can't blame anyone - the spirals of alcohol abuse aren't a time to be neat and tidy. You know that. The sight is homely to you.",
-    "Electrochemistry"
-)
-DSC_ectemp = partial( DoSkillCheck, 
-    "[] ",
-    ""
-)
-DSC_ecbowl = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] Everyone knows the morning cigarette is the most important meal of the day.",
-    "Electrochemistry"
-)
-DSC_dblighterloc = partial( DoSkillCheck, 
-    "[ENCYCLOPEDIA] Actually, did you not leave your lighter in the kitchen? You absent-mindedly emptied your pockets a few hours ago.",
-    "Encyclopedia"
-)
-DSC_sdmefwantweed = partial( DoSkillCheck, 
-    "[SERENDIPITY] Someone runs their paw pad against the flint wheel. The air remains cold.",
-    "Serendipity"
-)
-DSC_afmefwantweed2 = partial( DoSkillCheck, 
-    "[ARS FELINE] We will tell you, there's a cat out there who could really use some soft haziness in their grey, floppy ears.",
-    "Ars feline"
-)
-DSC_lxwantweed = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] No, no, felines. WE would really like to smoke, too.",
-    "Electrochemistry"
-)
-DSC_embers = partial( DoSkillCheck, 
-    "[SERENDIPITY] You used to be joined like this with the love of the world, sharing embers with distant lips, warm in the streetlights of the night. Now, so far away, alone, even the stars are locked in the white brick ceiling.", 
-    "Serendipity"
-    )
-DSC_stand = partial( DoSkillCheck, 
-    "[ELECTROCHEMISTRY] Plenty more back home. This joint was just a one night stand.",
-    "Electrochemistry"
-)
-DSC_weedsleep = partial( DoSkillCheck, 
-    "[DEBUGGING] It'll be easier for you to fall asleep now.",
-    "Debugging"
-)
-
-
-def gotoLivingRoom_trash():
-    hub_livingroom_trash = True
-    texthub = "text goes here"
-    while hub_livingroom_trash:
-        treeinput = doinput( texthub, lr_trash_inputs )
-        match treeinput:
-            case 1: # Ashtray bowl
-                lr_eventjoint()
-            case 2: # Under table (the toby fox game)
-                lr_mephsequence()
-            case 3:
-                hub_livingroom_trash = False
-
-lr_seqceiling = "Gaze at the ceiling."
-lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive gaze."], 
-    ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
-    ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
-    [DSC_sdangry]]
-    # FIXME If a skill function is the last in a table, it will force you to skip twice if it doesn't play
-    # Just fix it later
-
-lr_seqtrash = "Try to concern yourself with the trash around the room."
-lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chips."],
-    ["The table cloth is begging for a distant laundry day. Prominent stains of various alcohol drinks paint lakes and oceans, like on a geographical map."],
-    ["There's a red cereal bowl filled with ash and stubs, surrounded by its many shot glass children."],
-    [DSC_sdshots],
-    ["A bustling metropolis of glassy vodka skyscrapers is situated near the sofa, shaping and curving the lights of the room into a quiet night life."],
-    ["Overall, it looks like shit."],
-    [DSC_ecdump],
-    ["It'll take a while to make neat again, even for a sober person, and neither you or Mefedron will be sober for a good while. She can use the help nonetheless."]
-    ]
-
-lr_seqhallway = "Leave the living room out to the hallway"
-
-# Inputs for looking at the clutter
-# Bowl
-# Look under the table
-# Go back
-
-lr_seqtrash_bowl = "Curiously peep into the cereal bowl."
-lr_seqtrash_bowl_r = [["An inconspicuous bowl."], 
-    ["Okay, no. It looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
-    [DSC_ecbowl],
-    ["A nasty little image of filling the bowl with milk intrudes on your mind, it makes you shiver."],]
-
-lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."], 
-    ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned."], 
-    ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt."], 
-    ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy."], 
-    ["[ELECTROCHEMISTRY] Well, you going for it?"], 
-    ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter."], 
-    ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], ]
+# /-----------------------------------------------------
+# SEQ: JOINT
+# /------------------------------------------------------
+# You found a joint in the bowl
+# /-----------------------------------------------------
 
 lr_eventjoint_smoke_text = [ ["Carefully you reach inside and hoist the joint in between two talons, tapping the ash off lightly. "], 
  ["It's barely touched, despite that its creator clearly put some love into it."], 
@@ -268,6 +227,19 @@ lr_eventjoint_smoke_text = [ ["Carefully you reach inside and hoist the joint in
  [DSC_stand],  
  [DSC_weedsleep], 
  ["[SERENDIPITY] Feels like there's something out there, thoughts wandering the streetlights. Maybe go and see."], ]
+
+lr_eventjoint_first = [ ["[ELECTROCHEMISTRY] Wait. Wait, look."], 
+    ["[ELECTROCHEMISTRY] A white dove sits buried with the cigarette butts, forgotten and abandoned."], 
+    ["[ELECTROCHEMISTRY] Yes, and not just any joint. It's been barely touched. Okay, like more than half of it is burnt."], 
+    ["[ELECTROCHEMISTRY] But with your weak head, it might just be enough to get you a little woozy."], 
+    ["[ELECTROCHEMISTRY] Well, you going for it?"], 
+    ["[ELECTROCHEMISTRY] Ah, fuck. Of course. Someone probably took your lighter, and the rest are buried in the clutter."], 
+    ["[ELECTROCHEMISTRY] Just look around and come back later. There must be at least one fire source in her nest of decadence."], ]
+
+lr_seqtrash_bowl_r = [["An inconspicuous bowl."], 
+    ["Okay, no. It looks really weird and grotesque. What was once a morning treat now an ashtray for habitual smokers, dried out bottles of alcohol orbiting it."],
+    [DSC_ecbowl],
+    ["A nasty little image of filling the bowl with milk intrudes on your mind, it makes you shiver."],]
 
 def lr_eventjoint_smoke():
     PrintNested(lr_eventjoint_smoke_text)
@@ -327,13 +299,56 @@ def lr_eventjoint():
         else:
             PrintNested( "A cigarette tarantula lies buried in the ash, its leg butts sticking out in a silent prowl." )
 
+# /-----------------------------------------------------
+# SEQ: TRASH
+# /------------------------------------------------------
+# Looking at the trash in the living room. Mini hub
+# /-----------------------------------------------------
+
+lr_seqtrash_r = [["It's dire. The carpet is spikey with crushed fragments of chips."],
+    ["The table cloth is begging for a distant laundry day. Prominent stains of various alcohol drinks paint lakes and oceans, like on a geographical map."],
+    ["There's a red cereal bowl filled with ash and stubs, surrounded by its many shot glass children."],
+    [DSC_sdshots],
+    ["A bustling metropolis of glassy vodka skyscrapers is situated near the sofa, shaping and curving the lights of the room into a quiet night life."],
+    ["Overall, it looks like shit."],
+    [DSC_ecdump],
+    ["It'll take a while to make neat again, even for a sober person, and neither you or Mefedron will be sober for a good while. She can use the help nonetheless."]
+    ]
+
+lr_seqtrash_bowl = "Curiously peep into the cereal bowl."
 lr_seqtrash_undertable = "Check the destruction under the table."
-
 lr_seqtrash_goback = "Focus on something else than trash, finally."
-
-lr_inputs = [lr_seqceiling, lr_seqtrash, lr_seqhallway ]
-
 lr_trash_inputs = [lr_seqtrash_bowl, lr_seqtrash_undertable, lr_seqtrash_goback ]
+
+def gotoLivingRoom_trash():
+    hub_livingroom_trash = True
+    texthub = "text goes here"
+    while hub_livingroom_trash:
+        treeinput = doinput( texthub, lr_trash_inputs )
+        match treeinput:
+            case 1: # Ashtray bowl
+                lr_eventjoint()
+            case 2: # Under table (the toby fox game)
+                lr_mephsequence()
+            case 3:
+                hub_livingroom_trash = False
+
+
+# /-----------------------------------------------------
+# LIVING ROOM HUB
+# /------------------------------------------------------
+
+lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive gaze."], 
+    ["Little grey clouds of spider webs hang loosely from the corners of the room, long desolate."],
+    ["The upstairs neighbours are quiet. It is the middle of the night, after all. The crickets outside agree."],
+    [DSC_sdangry]]
+    # FIXME If a skill function is the last in a table, it will force you to skip twice if it doesn't play
+    # Just fix it later
+
+lr_seqceiling = "Gaze at the ceiling."
+lr_seqtrash = "Try to concern yourself with the trash around the room."
+lr_seqhallway = "Leave the living room out to the hallway"
+lr_inputs = [lr_seqceiling, lr_seqtrash, lr_seqhallway ]
 
 livingroomhub = "The living room feels like an epicentre of conciousness, white popcorn walls and a " \
 "yellow ceiling light protecting you from the crushing unknown of the dark, distant city streets. Even the window curtains are squinting, scared of the horizon, only letting" \
