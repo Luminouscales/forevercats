@@ -18,7 +18,7 @@ FakeInput = d.FakeInput
 placeholder = "A Bytecat is sleeping here."
 
 # START
-import rooms.intro
-rooms.intro.gotoDebugIntro()
-#import rooms.livingroom
-#rooms.livingroom.gotoLivingRoom()
+#import rooms.intro
+#rooms.intro.gotoDebugIntro()
+import rooms.livingroom
+rooms.livingroom.gotoLivingRoom()

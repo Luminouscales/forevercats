@@ -105,6 +105,14 @@ DSC_weedsleep = partial( DoSkillCheck,
     "[DEBUGGING] It'll be easier for you to fall asleep now.",
     "Debugging"
 )
+DSC_bookhuxley = partial( DoSkillCheck, 
+    "[SERENDIPITY] Something cruel lurks in the void left by Huxley, like an arachnid nesting in a meteor crater.",
+    "Serendipity",
+)
+DSC_bookvish = partial( DoSkillCheck, 
+    "[ELECTROCHEMISTRY] Killing for love is one. Killing for love taken - another.",
+    "Electrochemistry",
+)
 
 # /-----------------------------------------------------
 # SEQ: MEPH
@@ -333,6 +341,63 @@ def gotoLivingRoom_trash():
             case 3:
                 hub_livingroom_trash = False
 
+# /-----------------------------------------------------
+# SEQ: BOOKS
+# /------------------------------------------------------
+# Encyclopedia book dump
+# /-----------------------------------------------------
+
+bookinputs = [["Huxley's Neue Welt", "lr_huxley"], "An Eye For Justice", "Steel Deserts", "A Thousand Moons Ago", "Go back" ]
+
+book_huxley = [["Huxley's Neue Welt is a fairly short-form story about the titular protagonist, a fox, whose candid life is put in jeopardy by the shadow of a war looming over his country."],
+    ["It entails Huxley, in all his optimism, fighting for a way to bring his life meaning before destruction, to appreciate life and connect with those around him before it's over."],
+    ["The book seems to have a positive moral - probably about prevailing despite the fear of existence. A good trait to pick up in life."],
+    ["[ENCYCLOPEDIA] I don't remember the ending though. That's not good. You should ask Mef about it - perhaps she has read it."],
+    [DSC_bookhuxley]]
+
+book_vish = [["An American noir detective novel, also set in America. It tells the tale of a one-eyed lynx investigator with a characterstic purple hue of fur, down on his luck."],
+    ["Betrayed by a lover and a happy life in shards, he fights his morals, friends and own sanity on the way to vengeance. In the end he loses everything - but accomplishes his task."],
+    ]
+
+book_kenshi = [["A 400-page long book set on a post-apocalyptic moon. "], ["Desert hermits and dwellers struggle to live in the ruins of a civilisation once grand and thriving. Most only barely scrape by, evading hunger, deadly animals and even deadlier sentient beings."],
+["Also robots - plenty of them."]]
+
+book_lynx = [["A fantasy novel about two dragons in a prehistoric, but civilised setting."],
+["One dragon, a princess of a kingdom, is betrayed by her mother, though through undying ferocity she survives the betrayal and sets out to destroy the kingdoms she once swore to."],
+["She is joined by a smaller dragon with unbroken quietude in its mind, hailing from a moon-frozen forest. The two go on an adventure painted by contrasts of personality, conviction and love for the world."],
+["A fairly new entry into the educational canon of literature, it has been criticised by right-wing readers and parents for its progressive morals and messages. It's liked by kids, though. Especially popular with teenagers."]] 
+
+def lr_books_seq():
+    PrintNested("A modest bookshelf is joined atop a rustic cabinet, looking out of place in the breadth of the living room.")
+    if ReturnFlag("lr_tookmeph"):
+        PrintNested("[ELECTROCHEMISTRY] What are you doing, looking at these boring things? Get out there and bite life by the scruff.")
+    else:
+        PrintNested("Some books line a shelf, barely reaching its halfway point. The other three underneath have grown a coat of dust.")
+        if DoSkillCheck("[ENCYCLOPEDIA] A couple of them catch your attention. Perhaps a way to ground yourself back in reality?", "Encyclopedia", True):
+            if DoSkillCheck("[SERENDIPITY] Huxley's Neue Welt.", "Serendipity", True):
+                SetFlag("lr_huxley")
+            
+            bookchoice = True
+            texthub = "The books are deathly still."
+            while bookchoice:
+                treeinput = doinput( texthub, bookinputs )
+                match treeinput:
+                    case 1: PrintNested(book_huxley)
+                    case 2: 
+                        PrintNested(book_vish)
+                        DSC_bookvish(wait=True)
+                        PrintNested("The ending is left neutral and undecided.", fake="Kids have quite the colourful selection of required reading.")
+                        PrintNested("They do. There is naturally a plethora of mundane books that are also required. Your education system intentionally took a liking to more interesting books - to make it easier for children to consume literature.")
+                        PrintNested("You read all of this, too. It's why you remember.")
+                    case 3:
+                        PrintNested(book_kenshi)
+                        PrintNested( "It's a marathon of depressing stories. Though interesting, only the most dedicated finished it.", fake="Did I?")
+                        PrintNested( "Yes. It was inspiring." )
+                    case 4: PrintNested( book_lynx )
+                    case 5: bookchoice = False
+        else:
+            PrintNested("None of them catch your attention, though - you're too hazy.")
+
 
 # /-----------------------------------------------------
 # LIVING ROOM HUB
@@ -345,14 +410,15 @@ lr_seqceiling_r = [["Nothing notable. The honey lamp hurts your soft, furtive ga
     # FIXME If a skill function is the last in a table, it will force you to skip twice if it doesn't play
     # Just fix it later
 
-lr_seqceiling = "Gaze at the ceiling."
-lr_seqtrash = "Try to concern yourself with the trash around the room."
+lr_seqceiling = "Gaze at the ceiling"
+lr_seqtrash = "Try to concern yourself with the trash around the room"
+lr_books = "Examine the bookshelves"
 lr_seqhallway = "Leave the living room out to the hallway"
-lr_inputs = [lr_seqceiling, lr_seqtrash, lr_seqhallway ]
+lr_inputs = [lr_seqceiling, lr_seqtrash, lr_books, lr_seqhallway ]
 
 livingroomhub = "The living room feels like an epicentre of conciousness, white popcorn walls and a " \
 "yellow ceiling light protecting you from the crushing unknown of the dark, distant city streets. Even the window curtains are squinting, scared of the horizon, only letting" \
-"a few black stripes through. At least the various tables feel cozy under their blankets of empty packagings and random items."
+" a few black stripes through. At least the various tables feel cozy under their blankets of empty packagings and random items."
 
 def gotoLivingRoom():
     hub_livingroom = True
@@ -365,5 +431,7 @@ def gotoLivingRoom():
                 PrintNested( lr_seqtrash_r )
                 gotoLivingRoom_trash()
             case 3:
+                lr_books_seq()
+            case 4:
                 import rooms.hallway
                 rooms.hallway.gotoHallway()

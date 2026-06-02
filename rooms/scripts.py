@@ -23,7 +23,8 @@ tbl_flags = {
     'lr_havelighter': False, # Grabbed the lighter from the kitchen
     'lr_wherelighter': False, # Currently looking for the lighter
     'lr_sawmeph': False, # Saw the baggie under the table
-    'lr_tookmeph': False # Slammed the meph
+    'lr_tookmeph': False, # Slammed the meph
+    'lr_huxley': False
 }
 
 # Prints only in debug mode. Has a random bracket message because cute
@@ -42,7 +43,7 @@ def ReturnFlag(flag):
         return tbl_flags[flag]
 
 # Sets the given flag to given bool. Shows if debug enabled
-def SetFlag( flag, bool ):
+def SetFlag( flag, bool=True ):
     old = tbl_flags[flag]
     tbl_flags[flag] = bool
     PrintDebug( f"Flag '{flag}' set to {tbl_flags[flag]}, was {old}." )
@@ -141,18 +142,24 @@ def DoConditional( text, flag ):
 # Text is the text to be printed and skill is the associated skill, checking if it's active. If not, there's only a chance it will speak.
 # We return False here when nothing is said so that you don't have to enter through an empty line.
 # You have to specify wait=True when calling the function outside of a dialogue table because otherwise it will skip
-def DoSkillCheck( text, skill, wait=False ):
+# text can be none to just do a skillcheck
+def DoSkillCheck( text=None, skill=None, wait=False ):
+    doprint = True
+    if text is None:
+        doprint = False
     if skill not in tbl_skillpoints:
-        print( f"YOU MISSPELLED {skill}!!")
+        input( f"YOU MISSPELLED {skill}!!")
     elif tbl_skillpoints[ skill ]:
-        print( text )
-        if wait:
-            skip()
+        if doprint:
+            print( text )
+            if wait:
+                skip()
         return True
     elif random.randint( 1, 2 ) == 1:
-        print( text )
-        if wait:
-            skip()
+        if doprint:
+            print( text )
+            if wait:
+                skip()
         return True
     else:
         return False
